@@ -1,92 +1,237 @@
-<template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
-
-        <jet-validation-errors class="mb-4" />
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
+<template #test>
+    <div class="login">
+        <div class="login-pos">
+            <div class="col-sm-10 login-box">
+                <img class="login-logo" src="img/login-logo.png" alt="logo" width="238px" height="203px">
+                <br>
+                <br>
+                <div class="text">Sveiki atvykę į LERG!</div>
+                <jet-validation-errors />
+                <div v-if="status" class="login-klaida">
+                    {{ status }}
+                </div>
+                <div class="input-bg py-3">
+                    <form @submit.prevent="submit">
+                        <input id="email" type="text" class="inputas mb-2" v-model="form.username" required autofocus placeholder="Vartotojo vardas"/>
+                        <input type="password" name="password" v-model="form.password" class="inputas" placeholder="Slaptažodis"/>
+                        <br>
+                        <br>
+                        <jet-button class="button" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                            Prisijungti
+                        </jet-button>
+                        <br>
+                        <br>
+                    </form>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <div class="align-items-center justify-content-center lerg-text">
+                    LERG
+                </div>
+            </div>
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
-            </div>
-
-            <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <jet-checkbox name="remember" v-model="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Forgot your password?
-                </inertia-link>
-
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Login
-                </jet-button>
-            </div>
-        </form>
-    </jet-authentication-card>
+    </div>
 </template>
-
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetCheckbox from '@/Jetstream/Checkbox'
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
+import JetButton from '@/Jetstream/Button'
+import JetInput from '@/Jetstream/Input'
+import JetCheckbox from '@/Jetstream/Checkbox'
+import JetLabel from '@/Jetstream/Label'
+import JetValidationErrors from '@/Jetstream/ValidationErrors'
 
-    export default {
-        components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetCheckbox,
-            JetLabel,
-            JetValidationErrors
-        },
+export default {
+    components: {
+        JetAuthenticationCard,
+        JetButton,
+        JetInput,
+        JetCheckbox,
+        JetLabel,
+        JetValidationErrors
+    },
 
-        props: {
-            canResetPassword: Boolean,
-            status: String
-        },
+    props: {
+        canResetPassword: Boolean,
+        status: String
+    },
 
-        data() {
-            return {
-                form: this.$inertia.form({
-                    email: '',
-                    password: '',
-                    remember: false
+    data() {
+        return {
+            form: this.$inertia.form({
+                username: '',
+                password: '',
+                remember: false
+            })
+        }
+    },
+
+    methods: {
+        submit() {
+            this.form
+                .transform(data => ({
+                    ... data,
+                    remember: this.form.remember ? 'on' : ''
+                }))
+                .post(this.route('login'), {
+                    onFinish: () => this.form.reset('password'),
                 })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form
-                    .transform(data => ({
-                        ... data,
-                        remember: this.form.remember ? 'on' : ''
-                    }))
-                    .post(this.route('login'), {
-                        onFinish: () => this.form.reset('password'),
-                    })
-            }
         }
     }
+}
 </script>
+
+
+<style lang="scss" scoped>
+.login {
+    background: #151821 !important;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 50rem;
+}
+
+.login-pos {
+    width: 300px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.text {
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    width: 300px;
+    background: #e3242b;
+    border: 2px solid #e3242b;
+    border-radius: 15px 15px 0 0;
+    text-transform: uppercase;
+    color: #0f1118;
+    font-weight: 600;
+    box-shadow: 0 0 5px 0 rgba(177, 28, 34, 1);
+}
+.button {
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    width: 300px;
+    background: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 0 0 15px 15px;
+    text-transform: uppercase;
+    color: #0f1118;
+    font-weight: 600;
+    box-shadow: 0 2px 0 0 rgba(172, 172, 173, 1),
+    0 0 5px 0 rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    &:hover {
+        height: 50px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+        width: 300px;
+        border: 2px solid #e3242b;
+        border-radius: 0 0 15px 15px;
+        text-transform: uppercase;
+        color: #0f1118;
+        font-weight: 600;
+        box-shadow: 0 2px 0 0 rgba(177, 28, 34, 1),
+        0 0 5px 0 rgba(277, 36, 43, 0.4);
+        background: -moz-linear-gradient(90deg,
+            rgb(227, 36, 43) 0%,
+            rgb(227, 36, 43) 100%);
+        background: -webkit-linear-gradient(90deg,
+            rgb(227, 36, 43) 0%,
+            rgb(227, 36, 43) 100%);
+        background: -ms-linear-gradient(90deg,
+            rgb(227, 36, 43) 0%,
+            rgb(227, 36, 43) 100%);
+        background: linear-gradient(90deg,
+            rgb(227, 36, 43) 0%,
+            rgb(227, 36, 43) 100%);
+    }
+}
+.inputas {
+    background: #151821;
+    border: solid #151821 1px;
+    width: 100%;
+    outline: none;
+    box-shadow: 0 2px 5px 0 rgba(15, 17, 24, 1);
+    color: #e3242b;
+}
+.input-bg {
+    background: #0f1118;
+    width: 300px;
+    height: 11rem;
+    border-color: #0f1118;
+    box-shadow: 0 2px 0 0 rgba(177, 28, 34, 1) inset;
+}
+.login-klaida {
+    color: #e3242b;
+}
+.login-logo {
+    margin-left: 20px;
+}
+.lerg-text {
+    font-size: 72px;
+    color: #e3242b;
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: center;
+    font-family: "CRASSROOTSOFLREG";
+    -moz-transform: matrix(1.35, 0, 0, 1.35097493036212, 0, 0);
+    -webkit-transform: matrix(1.35, 0, 0, 1.35097493036212, 0, 0);
+    -ms-transform: matrix(1.35, 0, 0, 1.35097493036212, 0, 0);
+    transform: matrix(1.35, 0, 0, 1.35097493036212, 0, 0);
+    left: 35%;
+    padding-top: 10px;
+    position: absolute;
+}
+.login-box {
+    width: 300px;
+    height: 100px;
+    position: absolute;
+    top: 150px;
+    bottom: 0;
+    left: -5%;
+    right: 0;
+    margin: 0 auto auto 0;
+    transform: translateY(-50%);
+}
+:-ms-input-placeholder {
+    color: #e3242b;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+::-ms-input-placeholder {
+    color: #e3242b;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+::placeholder {
+    color: #e3242b;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 1;
+}
+@font-face {
+    font-family: "CRASSROOTSOFLREG";
+    src: url('/font/CRASSROOTSOFLREG.ttf') format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+</style>

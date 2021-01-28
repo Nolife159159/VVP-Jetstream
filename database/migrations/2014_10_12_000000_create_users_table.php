@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->integer('skin')->nullable();
             $table->integer('pinigai')->nullable();
             $table->integer('patirtis')->nullable();
-            $table->integer('pinigai')->nullable();
             $table->integer('gender')->nullable();
             $table->dateTime('regdate')->nullable();
             $table->integer('vip')->nullable();
