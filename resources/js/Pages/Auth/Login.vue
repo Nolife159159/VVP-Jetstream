@@ -12,7 +12,7 @@
                 </div>
                 <div class="input-bg py-3">
                     <form @submit.prevent="submit">
-                        <input id="email" type="text" class="inputas mb-2" v-model="form.username" required autofocus placeholder="Vartotojo vardas"/>
+                        <input id="username" type="text" class="inputas mb-2" v-model="form.username" autofocus placeholder="Vartotojo vardas"/>
                         <input type="password" name="password" v-model="form.password" class="inputas" placeholder="Slaptažodis"/>
                         <br>
                         <br>
@@ -194,7 +194,7 @@ export default {
     -ms-transform: matrix(1.35, 0, 0, 1.35097493036212, 0, 0);
     transform: matrix(1.35, 0, 0, 1.35097493036212, 0, 0);
     left: 35%;
-    padding-top: 10px;
+    padding-top: 20px;
     position: absolute;
 }
 .login-box {
