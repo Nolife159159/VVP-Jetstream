@@ -51,12 +51,24 @@ export default {
         JetLabel,
         JetValidationErrors
     },
-
+    metaInfo: {
+        title: 'LERG.LT Vartotojų valdymo panelė prisijungimas',
+        meta: [
+            { charset: 'utf-8' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            { name: 'description', content: 'LERG.LT Vartotojų valdymo panelė prisijungimas' },
+            { name: 'keyword', content: 'LERG.LT Vartotojų valdymo panelė prisijungimas, LERG, VVP, LERG.LT' },
+            { name: 'apple-web-app-capable', content: 'yes' },
+            { name: 'apple-mobile-web-title', content: 'LERG.LT Vartotojų valdymo panelė prisijungimas' },
+            { name: 'apple-mobile-web-capable', content: 'yes' },
+            { name: 'application-name', content: 'LERG.LT Vartotojų valdymo panelė prisijungimas' },
+            { name: 'application-starturl', content: '/' }
+        ]
+    },
     props: {
         canResetPassword: Boolean,
         status: String
     },
-
     data() {
         return {
             form: this.$inertia.form({
@@ -66,7 +78,6 @@ export default {
             })
         }
     },
-
     methods: {
         submit() {
             this.form
@@ -81,7 +92,6 @@ export default {
     }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .login {
