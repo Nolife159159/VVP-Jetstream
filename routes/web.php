@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BanUsersControler;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,9 +16,15 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('auth.login');
+    return Inertia::render('Auth/Login');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/profile', function () {
     return Inertia::render('Profile');
 })->name('Profile');
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/nustatymai', function () {
+    return Inertia::render('Nustatymai');
+})->name('Nustatymai');
+

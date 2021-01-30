@@ -35,20 +35,12 @@
     </div>
 </template>
 <script>
-import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-import JetButton from '@/Jetstream/Button'
-import JetInput from '@/Jetstream/Input'
-import JetCheckbox from '@/Jetstream/Checkbox'
-import JetLabel from '@/Jetstream/Label'
-import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import JetButton from '@/Components/Button'
+import JetValidationErrors from '@/Components/ValidationErrors'
 
 export default {
     components: {
-        JetAuthenticationCard,
         JetButton,
-        JetInput,
-        JetCheckbox,
-        JetLabel,
         JetValidationErrors
     },
     metaInfo: {

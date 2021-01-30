@@ -6,9 +6,7 @@ namespace App\Providers;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
@@ -24,16 +22,6 @@ class FortifyServiceProvider extends ServiceProvider
     {
         //
     }
-
-    protected function throwFailedAuthenticationException($request)
-    {
-        $this->limiter->increment($request);
-
-        throw ValidationException::withMessages([
-            Fortify::username() => "test",
-        ]);
-    }
-
     /**
      * Bootstrap any application services.
      *

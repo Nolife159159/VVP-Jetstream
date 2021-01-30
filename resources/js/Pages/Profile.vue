@@ -1,29 +1,53 @@
 <template>
-    <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
-            </h2>
-        </template>
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <welcome />
-                </div>
+    <div>
+        <navbar>
+        </navbar>
+        <div class="grid-container">
+            <div class="content">
+                <TitleContent/>
+                <PlayerInfoCharts/>
+                <OtherPlayerInfo/>
             </div>
         </div>
-    </app-layout>
+    </div>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+    import Navbar from "@/Components/Navbar";
+    import TopBar from "@/Components/TopBar";
+    import TitleContent from  "@/Components/TitleContent"
+    import PlayerInfoCharts from "@/Components/PlayerInfoCharts";
+    import OtherPlayerInfo from "@/Pages/OtherPlayerInfo";
 
     export default {
         components: {
-            AppLayout,
-            Welcome,
+            TopBar,
+            Navbar,
+            TitleContent,
+            PlayerInfoCharts,
+            OtherPlayerInfo
         },
     }
 </script>
+
+<style lang="scss" scoped>
+.grid-container {
+    display: grid;
+    grid-template-columns: 60px auto;
+    grid-template-rows: auto;
+    grid-template-areas: "nav content";
+    grid-gap: 0px;
+}
+.content {
+    grid-area: content;
+    background: #151821;
+    text-align: center;
+    padding-bottom: 1rem;
+    font-size: 80px;
+}
+@media (max-width: 768px) {
+    .grid-container {
+        display: block;
+    }
+}
+</style>
