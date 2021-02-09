@@ -31,17 +31,19 @@
                 </div>
             </div>
         </div>
-
+        <Toast />
     </div>
 </template>
 <script>
 import JetButton from '@/Components/Button'
 import JetValidationErrors from '@/Components/ValidationErrors'
+import Toast from "@/Components/Toast";
 
 export default {
     components: {
         JetButton,
-        JetValidationErrors
+        JetValidationErrors,
+        Toast
     },
     metaInfo: {
         title: 'LERG.LT Vartotojų valdymo panelė prisijungimas',
@@ -58,7 +60,6 @@ export default {
         ]
     },
     props: {
-        canResetPassword: Boolean,
         status: String
     },
     data() {

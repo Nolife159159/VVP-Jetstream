@@ -3,21 +3,25 @@
         <TopBar/>
         <div class="nav">
             <div class="nav-items">
+                <div class="item" v-if="this.$page.props.user.admin == 4">
+                    <img src="img/svg/acp-white.svg" alt="">
+                    <a :href="route('Admin')">ACP</a>
+                </div>
                 <div class="item active">
                     <img src="img/svg/forum-white.svg" alt="">
-                    <a href="">FORUMAS</a>
+                    <a href="www.lerg.lt">FORUMAS</a>
                 </div>
                 <div class="item">
                     <img src="img/svg/search-white.svg" alt="">
-                    <a href="">IEŠKOTI</a>
+                    <a :href="route('Paieska')">IEŠKOTI</a>
                 </div>
                 <div class="item">
                     <img src="img/svg/profilis-white.svg" alt="">
-                    <a href="">PROFILIS</a>
+                    <a :href="route('Profile')">PROFILIS</a>
                 </div>
                 <div class="item">
                     <img src="img/svg/top-white.svg" alt="">
-                    <a href="">TOP10</a>
+                    <a :href="route('Topai')">TOP10</a>
                 </div>
                 <div class="item">
                     <img src="img/svg/icon-logout-white.svg" alt="">
@@ -90,7 +94,7 @@ export default {
     .nav {
         position: absolute;
         left:0;
-        height: 100%;
+        height: 38rem;
         width: 4rem;
     }
 
@@ -99,6 +103,7 @@ export default {
 @media (max-width: 768px) {
     .nav {
         flex-direction: column;
+        display:unset !important;
         .nav-items {
             flex-direction: row;
             align-items: center;

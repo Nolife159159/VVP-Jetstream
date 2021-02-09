@@ -8,7 +8,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Pražaista <br>
-                        <span class="progress-number">{{ this.$page.props.user.Prazaide }} sec</span></span>
+                        <span class="progress-number long-time-date">{{ PrazaideUnixToDate }}</span></span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Patirtis <br>
-                        <span class="progress-number">{{ this.$page.props.user.patirtis }} XP</span></span>
+                        <span class="progress-number">{{ Number(this.$page.props.user.patirtis).toLocaleString() }} XP</span></span>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Uždarbis <br>
-                        <span class="progress-number">{{ this.$page.props.user.alga }} &euro;</span></span>
+                        <span class="progress-number">{{ Number(this.$page.props.user.alga).toLocaleString() }} &euro;</span></span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Pinigai <br>
-                        <span class="progress-number">{{ this.$page.props.user.pinigai }} &euro;</span></span>
+                        <span class="progress-number">{{ Number(this.$page.props.user.pinigai).toLocaleString() }} &euro;</span></span>
                     </div>
                 </div>
             </div>
@@ -53,6 +53,19 @@ export default {
                 { value: 100, color: '#e3242b' }
             ]
         };
+    },
+    computed: {
+        PrazaideUnixToDate: function () {
+            let sec_num = parseInt(this.$page.props.user.Prazaide, 10);
+            let hours   = Math.floor(sec_num / 3600);
+            let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            let seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+            if (hours   < 10) {hours   = "0"+hours;}
+            if (minutes < 10) {minutes = "0"+minutes;}
+            if (seconds < 10) {seconds = "0"+seconds;}
+            return hours+'H. '+minutes+'min. '+seconds+'sec. ';
+        },
     }
 }
 </script>
@@ -66,6 +79,9 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
     justify-content: space-between;
+}
+.long-time-date {
+    font-size: 23px !important;
 }
 .progress-text {
     font-size: 34px;
@@ -97,5 +113,15 @@ export default {
        padding-top: unset;
        float: left;
    }
+    .main-content {
+        margin: unset !important;
+    }
+}
+
+@font-face {
+    font-family: "CRASSROOTSOFLREG";
+    src: url('/font/Calibri.ttf') format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
 </style>

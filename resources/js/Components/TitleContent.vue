@@ -76,4 +76,11 @@
         margin-right: 25px;
     }
 }
+
+@font-face {
+    font-family: "CRASSROOTSOFLREG";
+    src: url('/font/Calibri.ttf') format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
 </style>

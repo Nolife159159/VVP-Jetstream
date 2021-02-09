@@ -27,7 +27,7 @@ class FortifyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public static function boot()
     {
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('vardas', $request->username)->select('id', 'vardas', 'slaptazodis')->first();
