@@ -1,32 +1,84 @@
 <template>
     <div>
-        <div class="unban">
-            <div class="input-group">
-                <span class="input-group-btn">
-                    <a class="btn unban-button">Atblokuoti</a>
-                </span>
-                <input type="text" name="unban-username" id="unban-name" class="margin-pc rcon-message-zaidejams2 form-control" placeholder="Vardas_Pavardė"/>
-                <input type="text" name="ban-username" id="ban-name" class="rcon-message-zaidejams2 form-control" placeholder="Vardas_Pavardė"/>
-                <span class="input-group-btn">
-                    <a class="btn unban-button">Blokuoti</a>
-                </span>
+        <form autocomplete="off">
+            <div class="unban">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <a class="btn unban-button">Atblokuoti</a>
+                    </span>
+                    <input type="text" name="unban-username" id="unban-name" v-model="Ban.unban_name"  class="margin-pc rcon-message-zaidejams2 form-control" placeholder="Vardas_Pavardė"/>
+                    <input type="text" name="ban-username" id="ban-name" v-model="Ban.ban_name" class="rcon-message-zaidejams2 form-control" placeholder="Vardas_Pavardė"/>
+                    <span class="input-group-btn">
+                        <a class="btn unban-button" @click="BanUser">Blokuoti</a>
+                    </span>
+                    <BanModal v-if="ShowBanModal" @close-modal="CloseModal" v-bind:Ban="this.Ban.ban_name">
+                        <span>Blokuoti žaidėją: <span class="name"> {{ this.Ban.ban_name }} </span>? <span class="close" @click="CloseModal">&times;</span></span>
+                    </BanModal>
+                    <div v-if="message">
+                        <SettingsDangerToast @close="remove">
+                            <p class="toast-text">{{ message }}</p>
+                        </SettingsDangerToast>
+                    </div>
+                </div>
             </div>
-        </div>
-
+        </form>
     </div>
 </template>
 
 <script>
+import BanModal from "@/Components/BanModal";
+import SettingsDangerToast from "@/Components/SettingsDangerToast";
 export default {
+    components: {
+        BanModal,
+        SettingsDangerToast
+    },
+    data: function() {
+        return {
+            Ban: {
+                unban_name: null,
+                ban_name: null
+            },
+            ShowBanModal: false,
+            message: '',
+        }
+    },
+    methods: {
+        BanUser(event) {
+            event.preventDefault();
+            if(this.Ban.ban_name === '' || this.Ban.ban_name === null) {
+                this.message = "* Laukelis negali būti tusčias."
+            } else {
+                axios.get('/Ban/' + this.Ban.ban_name)
+                    .then(response => {
+                        this.results = response.data;
+                        this.ShowBanModal = true;
+                    })
+                    .catch((error) => {
+                        this.message = "* Toks žaidėjas nerastas."
+                    });
+            }
+        },
+        CloseModal() {
+            this.ShowBanModal = false;
+        },
+        remove() {
+            this.message = null;
+        },
+    }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "./resources/sass/toast.scss";
 .unban {
     margin: 0% 15% 0% 15%;
 }
 .margin-pc {
     margin-right: 4%;
+}
+.toast-text {
+    font-size: 16px;
 }
 .unban-button {
     color: rgb(227, 36, 43) !important;
@@ -82,6 +134,9 @@ export default {
     text-align: unset;
     text-transform: uppercase;
     font-weight: unset;
+}
+.name {
+    color: #32324e;
 }
 @media (max-width: 768px) {
     .unban {

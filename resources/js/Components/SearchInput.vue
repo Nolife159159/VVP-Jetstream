@@ -12,18 +12,35 @@
             </div>
         </div>
         <div class="padd">
-            <input class="search_button" value="Ieškoti"/>
+            <button class="search_button" @click="SearchUserByName()">Ieškoti</button>
+        </div>
+        <div v-if="message">
+            <SettingsDangerToast @close="remove">
+                <p class="toast-text">{{ message }}</p>
+            </SettingsDangerToast>
+        </div>
+        <div v-if="this.$page.props.flash.msg">
+            <SettingsDangerToast @close="remove">
+                <p class="toast-text">{{ this.$page.props.flash.msg }}</p>
+            </SettingsDangerToast>
         </div>
     </div>
 </template>
 <script>
+import SettingsDangerToast from '@/Components/SettingsDangerToast'
+import Button from "@/Components/Button";
 export default {
+    components: {
+        Button,
+        SettingsDangerToast,
+    },
     data() {
         return {
             search_name: '',
             results: [],
             selectedObj: [],
-            h_index: -1
+            h_index: -1,
+            message: '',
         }
     },
     computed:{
@@ -37,7 +54,7 @@ export default {
         },
         go_up(event) {
             event.preventDefault()
-            if (this.h_index > 0) this.h_index--; else this.h_index = totalResults;
+            if (this.h_index > 0) this.h_index--; else this.h_index = this.totalResults;
         },
         highlight(index){this.h_index = index},
         select (index) {
@@ -46,19 +63,35 @@ export default {
             this.results = '';
         },
         getSearchData(event) {
-            this.results = [];
             if (this.search_name.length > 0 && (event.key !== 'ArrowDown' && event.key !== 'ArrowUp')){
+                this.results = [];
                 axios.get('/AutoComplete',{params: {search_name: this.search_name}})
                     .then(response => {
                         this.results = response.data;
-                    });
+                    }
+                );
             }
-        }
+        },
+        SearchUserByName() {
+            if(this.search_name === this.$page.props.user.vardas) {
+                this.message = "* Savęs ieškoti negalite."
+            }
+            if(this.search_name === '' || this.search_name === null) {
+                this.message = "* Laukelis negali būti tusčias."
+            } else if(this.message === "") {
+                window.location.href = '/profile/'+this.search_name;
+            }
+        },
+        remove() {
+            this.message = null;
+            this.$page.props.flash.msg = null;
+        },
     }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "./resources/sass/toast.scss";
 .search_name {
     width: 80%;
     margin-top: 150px;
@@ -67,6 +100,9 @@ export default {
 }
 .padd {
     padding-bottom: 40px;
+}
+.toast-text {
+    font-size: 16px;
 }
 .autocomplete-items div {
     padding: 10px;
@@ -105,6 +141,7 @@ export default {
     line-height: 0;
     text-transform: uppercase;
     text-align: center;
+    cursor: pointer;
 }
 ::-webkit-input-placeholder {
     text-transform: uppercase;

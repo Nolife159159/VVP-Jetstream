@@ -1,14 +1,14 @@
 <template>
     <div class="row margin">
         <div class="title2">
-            <h3 class="title-text">{{ this.$page.props.user.vardas }} Įspėjimai</h3>
+            <h3 class="title-text">{{ DisplayName() }} Įspėjimai</h3>
         </div>
         <div class="full" v-if="visp.length > 0">
             <table class="table table-hover table-dark">
                 <thead>
                 <tr>
                     <th scope="col" class="col-number">#</th>
-                    <th scope="col">VIP įspėjimai ({{ this.$page.props.user.visp }})</th>
+                    <th scope="col">VIP įspėjimai ({{ DisplayVipIsp() }})</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,7 +24,7 @@
                 <thead>
                 <tr>
                     <th scope="col" class="col-number">#</th>
-                    <th scope="col">VIP įspėjimai ({{ this.$page.props.user.visp }})</th>
+                    <th scope="col">VIP įspėjimai ({{ DisplayVipIsp() }})</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,7 @@
                 <thead>
                 <tr>
                     <th scope="col" class="col-number">#</th>
-                    <th scope="col">Admin įspėjimai ({{ this.$page.props.user.aisp }})</th>
+                    <th scope="col">Admin įspėjimai ({{ DisplayAdminIsp() }})</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,7 +56,7 @@
                 <thead>
                 <tr>
                     <th scope="col" class="col-number">#</th>
-                    <th scope="col">Admin įspėjimai ({{ this.$page.props.user.aisp }})</th>
+                    <th scope="col">Admin įspėjimai ({{ DisplayAdminIsp() }})</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -72,7 +72,7 @@
                 <thead>
                 <tr>
                     <th scope="col" class="col-number">#</th>
-                    <th scope="col">Direktoriaus įspėjimai ({{ this.$page.props.user.disp }})</th>
+                    <th scope="col">Direktoriaus įspėjimai ({{ DisplayDrkIsp() }})</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,7 +88,7 @@
                 <thead>
                 <tr>
                     <th scope="col" class="col-number">#</th>
-                    <th scope="col">VIP įspėjimai ({{ this.$page.props.user.disp }})</th>
+                    <th scope="col">VIP įspėjimai ({{ DisplayDrkIsp() }})</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -112,15 +112,45 @@ export default {
         }
     },
     created() {
-        axios.get("/VipWarningInfo",).then((res) => {
+        axios.get("/VipWarningInfo?name="+this.DisplayName()).then((res) => {
             this.visp = res.data;
         })
-        axios.get("/AdminWarningInfo",).then((res) => {
+        axios.get("/AdminWarningInfo?name"+this.DisplayName()).then((res) => {
             this.aisp = res.data;
         })
-        axios.get("/DrkWarningInfo",).then((res) => {
+        axios.get("/DrkWarningInfo?name"+this.DisplayName()).then((res) => {
             this.disp = res.data;
         })
+    },
+    methods: {
+        DisplayName() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.vardas;
+            } else {
+                return this.$page.props.SearchUserInfo.vardas;
+            }
+        },
+        DisplayVipIsp() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.visp;
+            } else {
+                return this.$page.props.SearchUserInfo.visp;
+            }
+        },
+        DisplayAdminIsp() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.aisp;
+            } else {
+                return this.$page.props.SearchUserInfo.aisp;
+            }
+        },
+        DisplayDrkIsp() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.disp;
+            } else {
+                return this.$page.props.SearchUserInfo.disp;
+            }
+        },
     }
 }
 </script>

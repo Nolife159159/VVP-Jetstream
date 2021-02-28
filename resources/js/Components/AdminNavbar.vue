@@ -3,13 +3,13 @@
         <div class="nav-bar-div">
             <div class="nav-bar">
                 <div class="nav-items">
-                    <a :href="route('Admin')"><img src="img/svg/nustatymai-icon.svg" alt=""> Nustatymai</a>
+                    <a :href="route('Admin')"><img src="/img/svg/nustatymai-icon.svg" alt=""> Nustatymai</a>
                 </div>
                 <div class="nav-items">
-                    <a :href="route('Informacija')"><img src="img/svg/info-icon.svg" alt=""> Info ir žaidėjai</a>
+                    <a :href="route('Informacija')"><img src="/img/svg/info-icon.svg" alt=""> Info ir žaidėjai</a>
                 </div>
                 <div class="nav-items">
-                    <a href="#logai" class="logai-button" @click="LogaiDropdown()"><img src="img/svg/logai-icon.svg" alt="" > Log'ai ir Ban'ai <img src="img/svg/dropdown-icon.svg" alt=""> </a>
+                    <a href="#logai" class="logai-button" @click="LogaiDropdown()"><img src="/img/svg/logai-icon.svg" alt="" > Log'ai ir Ban'ai <img src="/img/svg/dropdown-icon.svg" alt=""> </a>
                     <div class="dropdown" v-if="listOne">
                         <div class="dropdown-content" id="logai-dropdown">
                             <a :href="route('Logai')">Log'ai</a>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="nav-items">
-                    <a href="#serverio-nustatymais" class="server-nustatymai-button" @click="ServerioNustatymaiDropdown()"><img src="img/svg/serverio_veiksmai-icon.svg" alt=""> Serverio nustatymai <img src="img/svg/dropdown-icon.svg" alt=""> </a>
+                    <a href="#serverio-nustatymais" class="server-nustatymai-button" @click="ServerioNustatymaiDropdown()"><img src="/img/svg/serverio_veiksmai-icon.svg" alt=""> Serverio nustatymai <img src="/img/svg/dropdown-icon.svg" alt=""> </a>
                     <div class="dropdown" v-if="listTwo" @click="listTwo = false">
                         <div class="dropdown-content" id="serverio-nustatymai-dropdown">
                             <a :href="route('Configs')">Serverio Konfiguracija</a>

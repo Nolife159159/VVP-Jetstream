@@ -8,7 +8,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Pražaista <br>
-                        <span class="progress-number long-time-date">{{ PrazaideUnixToDate }}</span></span>
+                        <span class="progress-number long-time-date">{{ DisplayPrazaide() }}</span></span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Patirtis <br>
-                        <span class="progress-number">{{ Number(this.$page.props.user.patirtis).toLocaleString() }} XP</span></span>
+                        <span class="progress-number">{{ DisplayPatirtis() }} XP</span></span>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Uždarbis <br>
-                        <span class="progress-number">{{ Number(this.$page.props.user.alga).toLocaleString() }} &euro;</span></span>
+                        <span class="progress-number">{{ DisplayAlga() }} &euro;</span></span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="text-padding">
                         <span class="progress-text">Pinigai <br>
-                        <span class="progress-number">{{ Number(this.$page.props.user.pinigai).toLocaleString() }} &euro;</span></span>
+                        <span class="progress-number">{{ DisplayPinigai() }} &euro;</span></span>
                     </div>
                 </div>
             </div>
@@ -54,9 +54,9 @@ export default {
             ]
         };
     },
-    computed: {
-        PrazaideUnixToDate: function () {
-            let sec_num = parseInt(this.$page.props.user.Prazaide, 10);
+    methods: {
+        PrazaideUnixToDate: function (UnixTime) {
+            let sec_num = parseInt(UnixTime, 10);
             let hours   = Math.floor(sec_num / 3600);
             let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
             let seconds = sec_num - (hours * 3600) - (minutes * 60);
@@ -65,6 +65,37 @@ export default {
             if (minutes < 10) {minutes = "0"+minutes;}
             if (seconds < 10) {seconds = "0"+seconds;}
             return hours+'H. '+minutes+'min. '+seconds+'sec. ';
+        },
+        DisplayPrazaide() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.PrazaideUnixToDate(this.$page.props.user.Prazaide);
+            } else {
+                return this.PrazaideUnixToDate(this.$page.props.SearchUserInfo.Prazaide);
+            }
+        },
+        DisplayPatirtis() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return Number(this.$page.props.user.patirtis).toLocaleString();
+            } else {
+                return Number(this.$page.props.SearchUserInfo.patirtis).toLocaleString();
+
+            }
+        },
+        DisplayAlga() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return Number(this.$page.props.user.alga).toLocaleString();
+            } else {
+                return Number(this.$page.props.SearchUserInfo.alga).toLocaleString();
+
+            }
+        },
+        DisplayPinigai() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return Number(this.$page.props.user.pinigai).toLocaleString();
+            } else {
+                return Number(this.$page.props.SearchUserInfo.pinigai).toLocaleString();
+
+            }
         },
     }
 }

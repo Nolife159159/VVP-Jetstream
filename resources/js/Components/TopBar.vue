@@ -1,7 +1,7 @@
 <template>
     <div class="header">
-        <img src="img/main-logo.png" style="transform: scale(0.8);">
-        <img class="corner-logo" src="img/corner-logo.png" alt="">
+        <img src="/img/main-logo.png" style="transform: scale(0.8);">
+        <img class="corner-logo" src="/img/corner-logo.png" alt="">
     </div>
 </template>
 

@@ -11,54 +11,6 @@
                         <th>Bano liko</th>
                         <th>Užblokavimo data</th>
                     </tr>
-                    <tr>
-                        <td>Admin_Mantas</td>
-                        <td>Cytas</td>
-                        <td>Admin_Kalvis</td>
-                        <td>Laikinas Banas</td>
-                        <td>1555sec</td>
-                        <td>2021:02:08</td>
-                    </tr>
-                    <tr>
-                        <td>Admin_Mantas</td>
-                        <td>Cytas</td>
-                        <td>Admin_Kalvis</td>
-                        <td>IP Banas</td>
-                        <td>1555sec</td>
-                        <td>2021:02:08</td>
-                    </tr>
-                    <tr>
-                        <td>Admin_Mantas</td>
-                        <td>Cytas</td>
-                        <td>Admin_Kalvis</td>
-                        <td>Užblokuotas</td>
-                        <td>1555sec</td>
-                        <td>2021:02:08</td>
-                    </tr>
-                    <tr>
-                        <td>Admin_Mantas</td>
-                        <td>Cytas</td>
-                        <td>Admin_Kalvis</td>
-                        <td>Užblokuotas</td>
-                        <td>1555sec</td>
-                        <td>2021:02:08</td>
-                    </tr>
-                    <tr>
-                        <td>Admin_Mantas</td>
-                        <td>Cytas</td>
-                        <td>Admin_Kalvis</td>
-                        <td>Užblokuotas</td>
-                        <td>1555sec</td>
-                        <td>2021:02:08</td>
-                    </tr>
-                    <tr>
-                        <td>Admin_Mantas</td>
-                        <td>Cytas</td>
-                        <td>Admin_Kalvis</td>
-                        <td>Užblokuotas</td>
-                        <td>1555sec</td>
-                        <td>2021:02:08</td>
-                    </tr>
                 </table>
             </div>
         </div>
@@ -71,7 +23,7 @@ import Vue from "vue";
 let numeral = require("numeral");
 
 Vue.filter("formatNumber", function (value) {
-    return numeral(value).format("0,0"); // displaying other groupings/separators is possible, look at the docs
+    return numeral(value).format("0,0");
 });
 
 export default {

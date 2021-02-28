@@ -1,7 +1,7 @@
 <template>
     <div class="row padding">
         <div class="col-sm-9 main-panel">
-            <h2>{{ this.$page.props.user.vardas }} Darbų Patirtis</h2>
+            <h2>{{ DisplayName() }} Darbų Patirtis</h2>
         </div>
         <div class="col-sm-3 side-panel">
             <h2>Mėgstamiausi darbai</h2>
@@ -11,6 +11,15 @@
 
 <script>
 export default {
+    methods: {
+        DisplayName() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.vardas;
+            } else {
+                return this.$page.props.SearchUserInfo.vardas;
+            }
+        },
+    }
 }
 </script>
 

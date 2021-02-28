@@ -7,7 +7,7 @@
                         <a class="btn rcon-button">RCON</a>
                     </span>
                     <div class="rcon-message form-control">
-                        <select class name="cmd">
+                        <select class name="cmd" required>
                             <option value="" disabled selected class="top-select-text">Pasirinkite rcon komandą</option>
                             <option value="1">Say {Žinutė}</option>
                             <option value="2">Kick {Žaidėjo ID}</option>
@@ -49,7 +49,7 @@ export default {
     margin: 0% 15% 0% 15%;
 }
 .rcon-button {
-    color: rgb(227, 36, 43);
+    color: rgb(227, 36, 43) !important;
     background: transparent;
     background-image: none;
     border-color: rgb(227, 36, 43);
@@ -60,7 +60,7 @@ export default {
     height: 49px;
     cursor: default;
     &:hover {
-        color: #fff;
+        color: #fff !important;
         background: rgb(227, 36, 43);
         border-color: rgb(227, 36, 43);
     }

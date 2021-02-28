@@ -4,23 +4,74 @@
             <div class="top3-header">
                 <span>TOP 3 Žaidėjai pagal Uždarbį</span>
             </div>
-            <div class="top1">
+            <div class="top1" v-if="show" @click="ShowTopOne">
                 <div class="tops">
                     <span class="top-number top-place-1">1</span>
                 </div>
             </div>
-            <div class="top2">
+            <div class="top2" v-if="show" @click="ShowTopTwo">
                 <div class="tops">
                     <span class="top-number top-place-2">2</span>
                 </div>
             </div>
-            <div class="top3">
+            <div class="top3" v-if="show" @click="ShowTopThree">
                 <div class="tops">
                     <span class="top-number top-place-3">3</span>
                 </div>
             </div>
+            <div v-if="ShowTopOneDiv == 1" @click="CloseTopOne">
+                <div class="top1-clicked">
+                    <span class='tops-number'>1</span>
+                    <vc-donut class="test" :sections="sections" background="#cccc33" :size="120"></vc-donut>
+                    <span v-for="(item) in TopOne" class="players-name">{{item.vardas}}</span>
+                    <span v-for="(item) in TopOne" class="players-xp">{{Number(item.alga).toLocaleString()}} &euro;</span>
+                    <div class="more-info" v-for="(item) in TopOne">
+                        <span class='main-textas darbo-patirtis'>Darbo patirtis</span> <span class="result-textas">{{Number(item.VisasDarboXP).toLocaleString()}} XP.</span>
+                        <br>
+                        <span class='main-textas darbo-patirtis'>Pražaidė</span> <span class="result-textas">{{item.Prazaide}} sec.</span>
+                        <br>
+                        <span class='main-textas darbo-patirtis'>Alga</span> <span class="result-textas">{{Number(item.alga).toLocaleString()}} &euro;</span>
+                        <br>
+                        <span class='main-textas darbo-patirtis'>Reputacija</span> <span class="result-textas">{{Number(item.rep).toLocaleString()}} REP.</span>
+                    </div>
+                </div>
+            </div>
+            <div v-if="ShowTopTwoDiv == 1" @click="CloseTopTwo">
+                <div class="top2-clicked">
+                    <span class='tops-number'>2</span>
+                    <vc-donut class="test" :sections="sections" background="#cccccc" :size="120"></vc-donut>
+                    <span v-for="(item) in TopTwo" class="players-name">{{item.vardas}}</span>
+                    <span v-for="(item) in TopTwo" class="players-xp-2">{{Number(item.alga).toLocaleString()}} &euro;</span>
+                    <div class="more-info" v-for="(item) in TopTwo">
+                        <span class='main-textas-2 darbo-patirtis'>Darbo patirtis</span> <span class="result-textas">{{Number(item.VisasDarboXP).toLocaleString()}} XP.</span>
+                        <br>
+                        <span class='main-textas-2 darbo-patirtis'>Pražaidė</span> <span class="result-textas">{{item.Prazaide}} sec.</span>
+                        <br>
+                        <span class='main-textas-2 darbo-patirtis'>Alga</span> <span class="result-textas">{{Number(item.alga).toLocaleString()}} &euro;</span>
+                        <br>
+                        <span class='main-textas-2 darbo-patirtis'>Reputacija</span> <span class="result-textas">{{Number(item.rep).toLocaleString()}} REP.</span>
+                    </div>
+                </div>
+            </div>
+            <div v-if="ShowTopThreeDiv == 1" @click="CloseTopThree">
+                <div class="top3-clicked">
+                    <span class='tops-number'>3</span>
+                    <vc-donut class="test" :sections="sections" background="#cc9933" :size="120"></vc-donut>
+                    <span v-for="(item) in TopThree" class="players-name">{{item.vardas}}</span>
+                    <span v-for="(item) in TopThree" class="players-xp-3">{{Number(item.alga).toLocaleString()}} &euro;</span>
+                    <div class="more-info" v-for="(item) in TopThree">
+                        <span class='main-textas-3 darbo-patirtis'>Darbo patirtis</span> <span class="result-textas">{{Number(item.VisasDarboXP).toLocaleString()}} XP.</span>
+                        <br>
+                        <span class='main-textas-3 darbo-patirtis'>Pražaidė</span> <span class="result-textas">{{item.Prazaide}} sec.</span>
+                        <br>
+                        <span class='main-textas-3 darbo-patirtis'>Alga</span> <span class="result-textas">{{Number(item.alga).toLocaleString()}} &euro;</span>
+                        <br>
+                        <span class='main-textas-3 darbo-patirtis'>Reputacija</span> <span class="result-textas">{{Number(item.rep).toLocaleString()}} REP.</span>
+                    </div>
+                </div>
+            </div>
             <div class="top3-header">
-                <span></span>
+                <span>&nbsp;</span>
             </div>
         </div>
         <div class="col-md-8 mt4 mobile-padding">
@@ -53,7 +104,7 @@
                             <span class="PlayerRank" v-else>Paprastas žaidėjas</span>
                         </td>
                         <td class="PlayerXP padding">{{ Number(item.alga).toLocaleString() }} &euro;</td>
-                        <td class="PlayerTime padding" v-if="item.Prazaide != 0">{{ item.Prazaide }}</td>
+                        <td class="PlayerTime padding" v-if="item.Prazaide != 0">{{ PrazaideUnixToDate(item.Prazaide) }}</td>
                         <td class="PlayerTime padding" v-else>Žaidėjas nežaidė</td>
                     </tr>
                     </tbody>
@@ -70,13 +121,69 @@
 export default {
     data() {
         return {
-            Topai: []
+            Topai: [],
+            TopOne: [],
+            TopTwo: [],
+            TopThree: [],
+            show: 1,
+            ShowTopOneDiv: 0,
+            ShowTopTwoDiv: 0,
+            ShowTopThreeDiv: 0,
+            sections: [
+                { value: 100, color: '#E3A624' }
+            ]
         }
     },
     created() {
         axios.get("/TopsByWork",).then((res) => {
             this.Topai = res.data;
-        })
+        });
+        axios.get("/TopOneByWork",).then((res) => {
+            this.TopOne = res.data;
+        });
+        axios.get("/TopTwoByWork",).then((res) => {
+            this.TopTwo = res.data;
+        });
+        axios.get("/TopThreeByWork",).then((res) => {
+            this.TopThree = res.data;
+        });
+    },
+    methods: {
+        ShowTopOne() {
+            this.show = 0;
+            this.ShowTopOneDiv = 1;
+        },
+        CloseTopOne() {
+            this.show = 1;
+            this.ShowTopOneDiv = 0;
+        },
+        ShowTopTwo() {
+            this.show = 0;
+            this.ShowTopTwoDiv = 1;
+        },
+        CloseTopTwo() {
+            this.show = 1;
+            this.ShowTopTwoDiv = 0;
+        },
+        ShowTopThree() {
+            this.show = 0;
+            this.ShowTopThreeDiv = 1;
+        },
+        CloseTopThree() {
+            this.show = 1;
+            this.ShowTopThreeDiv = 0;
+        },
+        PrazaideUnixToDate: function (UnixTime) {
+            let sec_num = parseInt(UnixTime, 10);
+            let hours   = Math.floor(sec_num / 3600);
+            let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            let seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+            if (hours   < 10) {hours   = "0"+hours;}
+            if (minutes < 10) {minutes = "0"+minutes;}
+            if (seconds < 10) {seconds = "0"+seconds;}
+            return hours+'H. '+minutes+'min. '+seconds+'sec. ';
+        },
     }
 }
 </script>
@@ -92,6 +199,83 @@ export default {
     text-transform: uppercase;
     margin: 0px 0px 0px 15px;
     padding: 0.66rem;
+    box-shadow: 2px 2px 18px 0px rgba(0, 0, 0, 0.75);
+}
+.test {
+    position: absolute;
+    top: 175px;
+    left: 50px;
+}
+.top1-clicked {
+    margin: 0px 0px 0px 15px;
+    height: 595px;
+    background: linear-gradient(to bottom right, #cccc33 40%, #151821 40%);
+    box-shadow: 2px 2px 18px 0px rgba(0, 0, 0, 0.75);
+}
+.tops-number {
+    font-family: "Calibri";
+    font-size: 120px;
+    letter-spacing: 100px;
+    line-height: 0.8;
+    float: left;
+    color: #ffffff;
+}
+.players-name {
+    position: absolute;
+    line-height: 0;
+    font-size: 60px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    left: 90px;
+    top: 90px;
+}
+.main-textas {
+    color: #E3A624;
+    font-family: "Calibri";
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+.main-textas-2 {
+    color: #999999;
+    font-family: "Calibri";
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+.main-textas-3 {
+    color: #ffcc33;
+    font-family: "Calibri";
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+.result-textas {
+    font-size: 16px;
+    position: relative;
+    background: #FFFFFF;
+    margin-left: 120px;
+    color: #151821;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+}
+.more-info {
+    position: absolute;
+    top: 380px;
+    line-height: 0;
+    left: 56px;
+}
+.top2-clicked {
+    margin: 0px 0px 0px 15px;
+    height: 595px;
+    background: linear-gradient(to bottom right, #cccccc 40%, #151821 40%);
+    box-shadow: 2px 2px 18px 0px rgba(0, 0, 0, 0.75);
+}
+.top3-clicked {
+    margin: 0px 0px 0px 15px;
+    height: 595px;
+    background: linear-gradient(to bottom right, #cc9933 40%, #151821 40%);
     box-shadow: 2px 2px 18px 0px rgba(0, 0, 0, 0.75);
 }
 .padding {
@@ -150,6 +334,33 @@ export default {
     color: #FFFFFF;
     text-transform: uppercase;
     top: 50px;
+}
+.players-xp {
+    font-size: 40px;
+    font-family: "Calibri";
+    color: #E3A624;
+    text-transform: uppercase;
+    position: absolute;
+    top: 160px;
+    left: 210px;
+}
+.players-xp-2 {
+    font-size: 40px;
+    font-family: "Calibri";
+    color: #999999;
+    text-transform: uppercase;
+    position: absolute;
+    top: 160px;
+    left: 210px;
+}
+.players-xp-3 {
+    font-size: 40px;
+    font-family: "Calibri";
+    color: #ffcc33;
+    text-transform: uppercase;
+    position: absolute;
+    top: 160px;
+    left: 210px;
 }
 .table thead th {
     border-bottom: unset !important;
@@ -226,6 +437,7 @@ tr:nth-child(3) .list-number {
     letter-spacing: 3px;
     text-transform: uppercase;
     margin: 0px 5px 0px 15px;
+    padding-bottom: 60px;
 }
 @media (max-width: 768px) {
     .mobile-padding {
@@ -257,7 +469,65 @@ tr:nth-child(3) .list-number {
     .padding {
         padding-top: 30px !important;
     }
+    .players-name {
+        position: absolute !important;
+        left: 90px !important;
+        top: 90px !important;
+        font-size: 40px !important;
+    }
+    .players-xp {
+        color: #E3A624;
+        font-size: 27px;
+        position: absolute;
+        top: 160px;
+        left: 155px;
+    }
+    .result-textas {
+        font-size: 16px;
+        margin-left: 25px !important;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 25px;
+    }
+    .test {
+        top: 171px !important;
+        left: unset !important;
+    }
+    .more-info {
+        position: absolute;
+        top: 380px;
+        line-height: 0;
+        left: 15px;
+    }
 }
+
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (-webkit-min-device-pixel-ratio: 1) {
+    .players-name {
+        font-size: 26px !important;
+    }
+    .players-xp {
+        font-size: 40px;
+        font-family: "Calibri";
+        color: #E3A624;
+        text-transform: uppercase;
+        position: absolute;
+        top: 160px;
+        left: 100px;
+    }
+    .test {
+        display: none;
+    }
+    .result-textas {
+        margin-left: unset !important;
+    }
+    .more-info {
+        left: 25px !important;
+    }
+}
+
 
 @media (min-width : 1824px) {
     td {
@@ -268,6 +538,27 @@ tr:nth-child(3) .list-number {
     }
     .PlayerRank {
         left: -20px;
+    }
+    .players-name {
+        font-size: 75px;
+        left: 110px;
+    }
+    .players-xp {
+        position: absolute;
+        top: 150px;
+        left: 235px;
+        font-size: 90px;
+        color: #E3A624;
+    }
+    .more-info {
+        top: 440px !important;
+    }
+    .result-textas {
+        font-size: 20px;
+        margin-left: 290px;
+    }
+    .main-textas {
+        font-size: 30px !important;
     }
 }
 

@@ -9,7 +9,7 @@ class VipIspejimaiController extends Controller
 {
     public function GetWarningsUserByName(Request $request)
     {
-        $name = $request->user()->vardas;
+        $name = $request->name;
 
         $Warnings = VipIspejimai::where('vardas', $name)->get();
 

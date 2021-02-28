@@ -13,8 +13,8 @@
                         <input type="password" class="pass" name="pass3_input" v-model="changePW.repeat_pw"><br><br>
                         <button class="keisti-btn" name="change_pass" @click="ChangePassword">Keisti</button>
                         <br>
-                        <span class="klaida">{{ message_pass }}</span>
-                        <span class="pavyko">{{ success_pass }}</span>
+                        <span class="klaida" v-if="message_pass">{{ message_pass }}</span>
+                        <span class="pavyko" v-if="success_pass">{{ success_pass }}</span>
                     </form>
                 </div>
                 <div class="col nustatymu-bg padding">
@@ -28,8 +28,8 @@
                         <input type="text" class="pass" name="email2_input" v-model="changeEmail.repeat_Email"><br><br>
                         <button class="keisti-btn" @click="ChangeEmail">Keisti</button>
                         <br>
-                        <span class="klaida">{{ message_email }}</span>
-                        <span class="pavyko">{{ success_email }}</span>
+                        <span class="klaida" v-if="message_email">{{ message_email }}</span>
+                        <span class="pavyko" v-if="success_email">{{ success_email }}</span>
                     </form>
                 </div>
             </div>
@@ -46,10 +46,15 @@
                         <input type="password" class="pass" name="pin2_input" v-model="changePin.repeat_Pin"><br><br>
                         <button class="keisti-btn" name="change_pass" @click="ChangePin" v-if="this.$page.props.user.bank_pin != ''">Keisti</button>
                         <button class="keisti-btn" name="change_pass" @click="SetPin" v-else="">Nustatyti</button>
-                        <button class="keisti-btn" name="change_pass" @click="RemovePin" v-if="this.$page.props.user.bank_pin != ''">Nuimti</button>
+                        <button class="keisti-btn" name="change_pass" @click="ShowPinModal" v-if="this.$page.props.user.bank_pin != ''">Nuimti</button>
+                        <SettingsModal v-if="showPinConfirmModal" @close-modal="CloseModal">
+                            <form metod="POST" action="">
+                                <a class="yes-button btn modal-button" @click="RemovePin">Taip</a><button type="button" class="no-button btn modal-button" @click="CloseModal">Ne</button>
+                            </form>
+                        </SettingsModal>
                         <br>
-                        <span class="klaida">{{ message_bank_pin }}</span>
-                        <span class="pavyko">{{ success_pin }}</span>
+                        <span class="klaida" v-if="message_bank_pin">{{ message_bank_pin }}</span>
+                        <span class="pavyko" v-if="success_pin">{{ success_pin }}</span>
                     </form>
                 </div>
                 <div class="col nustatymu-bg padding">
@@ -78,10 +83,15 @@
                         <input type="text" class="pass" name="klausimas2_input" v-model="changeKl.repeat_Kl"><br><br>
                         <button class="keisti-btn" name="change_pass" @click="ChangeKlausimas" v-if="this.$page.props.user.SlaptasKlausimas != ''">Keisti</button>
                         <button class="keisti-btn" name="change_pass" @click="SetKlausimas" v-else="">Nustatyti</button>
-                        <button class="keisti-btn" name="change_pass" @click="RemoveKlausimas" v-if="this.$page.props.user.SlaptasKlausimas != ''">Nuimti</button>
+                        <button class="keisti-btn" name="change_pass" @click="ShowKlModal" v-if="this.$page.props.user.SlaptasKlausimas != ''">Nuimti</button>
+                        <SettingsModal v-if="showKlConfirmModal" @close-modal="CloseModal">
+                            <form metod="POST" action="">
+                                <a class="yes-button btn modal-button" @click="RemoveKlausymas">Taip</a><button type="button" class="no-button btn modal-button" @click="CloseModal">Ne</button>
+                            </form>
+                        </SettingsModal>
                         <br>
-                        <span class="klaida">{{ message_klausimas }}</span>
-                        <span class="pavyko">{{ success_klausimas }}</span>
+                        <span class="klaida" v-if="message_klausimas">{{ message_klausimas }}</span>
+                        <span class="pavyko" v-if="success_klausimas">{{ success_klausimas }}</span>
                     </form>
                 </div>
                 <div class="col nustatymu-bg padding">
@@ -96,19 +106,82 @@
                         <input type="password" class="pass" name="ats2_input" v-model="changeAts.repeat_Ats"><br><br>
                         <button class="keisti-btn" name="change_pass" @click="ChangeAtsakymas" v-if="this.$page.props.user.KlausimoAtsakymas != ''">Keisti</button>
                         <button class="keisti-btn" name="change_pass" @click="SetAtsakymas" v-else="">Nustatyti</button>
-                        <button class="keisti-btn" name="change_pass" @click="RemoveAtsakymas" v-if="this.$page.props.user.KlausimoAtsakymas != ''">Nuimti</button>
+                        <button class="keisti-btn" name="change_pass" @click="ShowAtsModal" v-if="this.$page.props.user.KlausimoAtsakymas != ''">Nuimti</button>
+                        <SettingsModal v-if="showAtsConfirmModal" @close-modal="CloseModal">
+                            <form metod="POST" action="">
+                                <a class="yes-button btn modal-button" @click="RemoveAtsakymas">Taip</a><button type="button" class="no-button btn modal-button" @click="CloseModal">Ne</button>
+                            </form>
+                        </SettingsModal>
                         <br>
-                        <span class="klaida">{{ message_atsakymas }}</span>
-                        <span class="pavyko">{{ success_atsakymas }}</span>
+                        <span class="klaida" v-if="message_atsakymas">{{ message_atsakymas }}</span>
+                        <span class="pavyko" v-if="success_atsakymas">{{ success_atsakymas }}</span>
                     </form>
                 </div>
             </div>
+        </div>
+        <div v-if="message_pass">
+            <SettingsDangerToast @close="remove">
+                <p class="toast-text">{{ message_pass }}</p>
+            </SettingsDangerToast>
+        </div>
+        <div v-if="message_email">
+            <SettingsDangerToast @close="remove">
+                <p class="toast-text">{{ message_email }}</p>
+            </SettingsDangerToast>
+        </div>
+        <div v-if="message_bank_pin">
+            <SettingsDangerToast @close="remove">
+                <p class="toast-text">{{ message_bank_pin }}</p>
+            </SettingsDangerToast>
+        </div>
+        <div v-if="message_klausimas">
+            <SettingsDangerToast @close="remove">
+                <p class="toast-text">{{ message_klausimas }}</p>
+            </SettingsDangerToast>
+        </div>
+        <div v-if="message_atsakymas">
+            <SettingsSuccessToast @close="remove_succes">
+                <p class="toast-text">{{ message_atsakymas }}</p>
+            </SettingsSuccessToast>
+        </div>
+        <div v-if="success_pass">
+            <SettingsSuccessToast @close-success="remove_succes">
+                <p class="toast-text">{{ success_pass }}</p>
+            </SettingsSuccessToast>
+        </div>
+        <div v-if="success_email">
+            <SettingsSuccessToast @close-success="remove_succes">
+                <p class="toast-text">{{ success_email }}</p>
+            </SettingsSuccessToast>
+        </div>
+        <div v-if="success_pin">
+            <SettingsSuccessToast @close-success="remove_succes">
+                <p class="toast-text">{{ success_pin }}</p>
+            </SettingsSuccessToast>
+        </div>
+        <div v-if="success_klausimas">
+            <SettingsSuccessToast @close-success="remove_succes">
+                <p class="toast-text">{{ success_klausimas }}</p>
+            </SettingsSuccessToast>
+        </div>
+        <div v-if="success_atsakymas">
+            <SettingsSuccessToast @close-success="remove_succes">
+                <p class="toast-text">{{ success_atsakymas }}</p>
+            </SettingsSuccessToast>
         </div>
     </div>
 </template>
 
 <script>
+import SettingsDangerToast from "@/Components/SettingsDangerToast";
+import SettingsSuccessToast from "@/Components/SettingsSuccessToast";
+import SettingsModal from "@/Components/SettingsModal";
 export default {
+    components: {
+        SettingsModal,
+        SettingsDangerToast,
+        SettingsSuccessToast
+    },
     data: function() {
         return {
             changePW: {
@@ -141,7 +214,10 @@ export default {
             message_pass: '',
             success_pass: '',
             success_email: '',
-            message_email: ''
+            message_email: '',
+            showKlConfirmModal: false,
+            showAtsConfirmModal: false,
+            showPinConfirmModal: false,
         }
     },
     methods: {
@@ -190,6 +266,7 @@ export default {
             axios.post('/RemovePin', this.changePin)
                 .then((response) => {
                     this.success_pin = response.data;
+                    this.showPinConfirmModal = false;
                 })
                 .catch((error) => {
                     this.message_bank_pin = error.response.data
@@ -215,11 +292,12 @@ export default {
                     this.message_klausimas = error.response.data
                 })
         },
-        RemoveKlausimas(event) {
+        RemoveKlausymas(event) {
             event.preventDefault();
             axios.post('/RemoveKlausimas', this.changeKl)
                 .then((response) => {
                     this.success_klausimas = response.data;
+                    this.showKlConfirmModal = false;
                 })
                 .catch((error) => {
                     this.message_klausimas = error.response.data
@@ -250,16 +328,49 @@ export default {
             axios.post('/RemoveAtsakymas', this.changeAts)
                 .then((response) => {
                     this.success_atsakymas = response.data;
+                    this.showAtsConfirmModal = false;
                 })
                 .catch((error) => {
                     this.message_atsakymas = error.response.data
                 })
         },
+        ShowKlModal(event) {
+            event.preventDefault();
+            this.showKlConfirmModal = true;
+        },
+        ShowAtsModal(event) {
+            event.preventDefault();
+            this.showAtsConfirmModal = true;
+        },
+        ShowPinModal(event) {
+            event.preventDefault();
+            this.showPinConfirmModal = true;
+        },
+        remove() {
+            this.message_pass = null
+            this.message_email = null
+            this.message_bank_pin = null
+            this.message_klausimas = null
+            this.message_atsakymas = null
+        },
+        remove_succes() {
+            this.success_pass = null
+            this.success_email = null
+            this.success_pin = null
+            this.success_klausimas = null
+            this.success_atsakymas = null
+        },
+        CloseModal() {
+            this.showKlConfirmModal = false;
+            this.showAtsConfirmModal = false;
+            this.showPinConfirmModal = false;
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "./resources/sass/toast.scss";
 .nustatymu-main-content {
     margin: 0px 15px 0px 15px;
     display: flex;
@@ -268,6 +379,9 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
     justify-content: space-between;
+}
+.toast-text {
+    font-size: 16px;
 }
 .klaida {
     color: #e3242b;

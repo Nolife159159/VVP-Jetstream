@@ -9,7 +9,7 @@ class DrkIspejimaiController extends Controller
 {
     public function GetWarningsUserByName(Request $request)
     {
-        $name = $request->user()->vardas;
+        $name = $request->name;
 
         $Warnings = DrkIspejimai::where('vardas', $name)->get();
 

@@ -47,7 +47,7 @@
                 { name: 'application-name', content: 'LERG.LT Vartotojų valdymo panelė | Profilis' },
                 { name: 'application-starturl', content: '/' }
             ]
-        },
+        }
     }
 </script>
 

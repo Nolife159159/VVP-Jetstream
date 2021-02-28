@@ -1,4 +1,4 @@
-<template #test>
+<template>
     <div class="login">
         <div class="login-pos">
             <div class="col-sm-10 login-box">
@@ -38,6 +38,7 @@
 import JetButton from '@/Components/Button'
 import JetValidationErrors from '@/Components/ValidationErrors'
 import Toast from "@/Components/Toast";
+import Footer from "@/Components/Footer";
 
 export default {
     components: {

@@ -87,7 +87,6 @@ class Kernel extends HttpKernel
         'password.confirm' => RequirePassword::class,
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
-        'verified' => EnsureEmailIsVerified::class,
-        'isOwner' => IsUserAdminMiddleware::class
+        'verified' => EnsureEmailIsVerified::class
     ];
 }

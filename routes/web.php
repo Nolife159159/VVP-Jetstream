@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\BanUsersControler;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,40 +36,74 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/paieska', function () {
     return Inertia::render('Search');
 })->name('Paieska');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/admin-nustatymai', function () {
-    return Inertia::render('Admin/ACP');
-})->name('Admin');
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/admin-info', function () {
-    return Inertia::render('Admin/ACP-Setings');
-})->name('Informacija');
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/admin-logai', function () {
-    return Inertia::render('Admin/ACP-Logai');
+Route::middleware(['auth:sanctum', 'verified'])->get('/admin/admin-logai', function (Request $request) {
+    $user = $request->user();
+    if ($user->can('CheckIfUserIsOwner', User::class)) {
+        return Inertia::render('Admin/ACP-Logai');
+    } else return Inertia::render('errors/UserNotAnOwner');
 })->name('Logai');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/admin-banai', function () {
-    return Inertia::render('Admin/ACP-Bans');
+Route::middleware(['auth:sanctum', 'verified'])->get('/admin/admin-nustatymai', function (Request $request) {
+    $user = $request->user();
+    if ($user->can('CheckIfUserIsOwner', User::class)) {
+        return Inertia::render('Admin/ACP');
+    } else return Inertia::render('errors/UserNotAnOwner');
+})->name('Admin');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/admin/admin-info', function (Request $request) {
+    $user = $request->user();
+    if ($user->can('CheckIfUserIsOwner', User::class)) {
+        return Inertia::render('Admin/ACP-Setings');
+    } else return Inertia::render('errors/UserNotAnOwner');
+})->name('Informacija');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/admin/admin-banai', function (Request $request) {
+    $user = $request->user();
+    if ($user->can('CheckIfUserIsOwner', User::class)) {
+        return Inertia::render('Admin/ACP-Bans');
+    } else return Inertia::render('errors/UserNotAnOwner');
 })->name('Banai');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/admin-rcon-banai', function () {
-    return Inertia::render('Admin/ACP-RconBans');
+Route::middleware(['auth:sanctum', 'verified'])->get('/admin/admin-rcon-banai', function (Request $request) {
+    $user = $request->user();
+    if ($user->can('CheckIfUserIsOwner', User::class)) {
+        return Inertia::render('Admin/ACP-RconBans');
+    } else return Inertia::render('errors/UserNotAnOwner');
 })->name('RconBanai');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/admin-configs', function () {
-    return Inertia::render('Admin/ACP-Configs');
+Route::middleware(['auth:sanctum', 'verified'])->get('/admin/admin-configs', function (Request $request) {
+    $user = $request->user();
+    if ($user->can('CheckIfUserIsOwner', User::class)) {
+        return Inertia::render('Admin/ACP-Configs');
+    } else return Inertia::render('errors/UserNotAnOwner');
 })->name('Configs');
 
-Route::get('/BanInfo', 'BanUsersControler@GetBannedUserByName');
+Route::get('/BanInfo', 'AdminBanUnbanController@GetBannedUserByName');
+
 Route::get('/VipWarningInfo', 'VipIspejimaiController@GetWarningsUserByName');
 Route::get('/AdminWarningInfo', 'AdminIspejimaiController@GetWarningsUserByName');
 Route::get('/DrkWarningInfo', 'DrkIspejimaiController@GetWarningsUserByName');
-Route::get('/TopsByXP', 'UserTopControler@TopsByXP');
-Route::get('/Top1ByXP', 'UserTopControler@Top1ByXP');
 
+Route::get('/TopsByXP', 'UserTopControler@TopsByXP');
 Route::get('/TopsByMoney', 'UserTopControler@TopsByMoney');
 Route::get('/TopsByWork', 'UserTopControler@TopsByWork');
 Route::get('/TopsByWorkXP', 'UserTopControler@TopsByWorkXP');
+
+Route::get('/TopOneByXP', 'UserTopControler@TopOneByXP');
+Route::get('/TopTwoByXP', 'UserTopControler@TopTwoByXP');
+Route::get('/TopThreeByXP', 'UserTopControler@TopThreeByXP');
+
+Route::get('/TopOneByWork', 'UserTopControler@TopOneByWork');
+Route::get('/TopTwoByWork', 'UserTopControler@TopTwoByWork');
+Route::get('/TopThreeByWork', 'UserTopControler@TopThreeByWork');
+
+Route::get('/TopOneByMoney', 'UserTopControler@TopOneByMoney');
+Route::get('/TopTwoByMoney', 'UserTopControler@TopTwoByMoney');
+Route::get('/TopThreeByMoney', 'UserTopControler@TopThreeByMoney');
+
+Route::get('/TopOneByWorkXp', 'UserTopControler@TopOneByWorkXp');
+Route::get('/TopTwoByWorkXp', 'UserTopControler@TopTwoByWorkXp');
+Route::get('/TopThreeByWorkXp', 'UserTopControler@TopThreeByWorkXp');
 
 Route::post('/ChangePassword', 'UpdateUserInfoController@ChangePassword');
 Route::post('/ChangeEmail', 'UpdateUserInfoController@ChangeEmail');
@@ -83,3 +118,8 @@ Route::post('/RemoveAtsakymas', 'UpdateUserInfoController@RemoveAtsakymas');
 Route::post('/RemovePin', 'UpdateUserInfoController@RemovePin');
 
 Route::get('/AutoComplete', 'SearchController@AutoComplete');
+
+Route::get('/profile/{name}', 'SearchController@SearchByUsername');
+
+Route::get('/Ban/{username}', 'AdminBanUnbanController@CheckIfUserExists');
+Route::put('/ConfirmBan/{username}', 'AdminBanUnbanController@ConfirmBan');

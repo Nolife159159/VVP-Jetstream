@@ -3,28 +3,28 @@
         <TopBar/>
         <div class="nav">
             <div class="nav-items">
-                <div class="item" v-if="this.$page.props.user.admin == 4">
-                    <img src="img/svg/acp-white.svg" alt="">
+                <div class="item" v-if="this.$page.props.user.admin == 4" :class="{'active': this.$page.url.startsWith('/admin') }">
+                    <img :src="AdminImgUrl" alt="">
                     <a :href="route('Admin')">ACP</a>
                 </div>
-                <div class="item active">
-                    <img src="img/svg/forum-white.svg" alt="">
+                <div class="item">
+                    <img src="/img/svg/forum-white.svg" alt="">
                     <a href="www.lerg.lt">FORUMAS</a>
                 </div>
-                <div class="item">
-                    <img src="img/svg/search-white.svg" alt="">
+                <div class="item" :class="{'active': this.$page.url === '/paieska' }">
+                    <img :src="SearchImgUrl" alt="">
                     <a :href="route('Paieska')">IEŠKOTI</a>
                 </div>
-                <div class="item">
-                    <img src="img/svg/profilis-white.svg" alt="">
+                <div class="item" :class="{'active': this.$page.url === '/profile' }">
+                    <img :src="ProfileImgUrl" alt="">
                     <a :href="route('Profile')">PROFILIS</a>
                 </div>
-                <div class="item">
-                    <img src="img/svg/top-white.svg" alt="">
+                <div class="item" :class="{'active': this.$page.url.startsWith('/topai') }">
+                    <img :src="TopImgUrl" alt="">
                     <a :href="route('Topai')">TOP10</a>
                 </div>
                 <div class="item">
-                    <img src="img/svg/icon-logout-white.svg" alt="">
+                    <img src="/img/svg/icon-logout-white.svg" alt="">
                     <form @submit.prevent="logout">
                         <a @click="logout()">ATSIJUNGTI</a>
                     </form>
@@ -42,12 +42,28 @@ export default {
         logout() {
             this.$inertia.post(route('logout'));
         },
+    },
+    computed: {
+        ProfileImgUrl() {
+            return this.$page.url === '/profile' ? '/img/svg/profilis-red.svg' : '/img/svg/profilis-white.svg';
+        },
+        TopImgUrl() {
+            return this.$page.url.startsWith('/topai') ? '/img/svg/top-red.svg' : '/img/svg/top-white.svg';
+        },
+        AdminImgUrl() {
+            return this.$page.url.startsWith('/admin') ? '/img/svg/acp-red.svg' : '/img/svg/acp-white.svg';
+        },
+        SearchImgUrl() {
+            return this.$page.url === '/paieska' ? '/img/svg/search-red.svg' : '/img/svg/search-white.svg';
+        },
     }
+
 }
 </script>
 
 <style lang="scss" scoped>
 .nav {
+    position: absolute;
     background: #0f1118;
     display:flex;
     justify-content: center;
@@ -56,8 +72,8 @@ export default {
         flex-direction: column;
         justify-content: center;
         .item {
-            display: flex;
-            align-items: center;
+            display: flex ;
+            align-items: center ;
             padding: .5rem 10px;
             border:3px solid transparent;
             justify-content: center;
@@ -97,7 +113,6 @@ export default {
         height: 38rem;
         width: 4rem;
     }
-
 }
 
 @media (max-width: 768px) {

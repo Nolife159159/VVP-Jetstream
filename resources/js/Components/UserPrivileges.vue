@@ -1,28 +1,79 @@
 <template>
     <div class="col">
         <div class="priv">
-            <span class="privs vip" v-if="this.$page.props.user.vip != 0">VIP</span>
-            <span class="privs sav" v-if="this.$page.props.user.admin == 4">Savininkas</span>
-            <span class="privs sav" v-if="this.$page.props.user.admin <= 4 && this.$page.props.user.admin != 4 && this.$page.props.user.admin != 0">Administratorius</span>
-            <span class="privs mod" v-if="this.$page.props.user.priziuretojas == 1">Atsiblokavimų prižiurėtojas</span>
-            <span class="privs mod" v-if="this.$page.props.user.priziuretojas == 2">Užblokavimų prižiurėtojas</span>
-            <span class="privs mod" v-if="this.$page.props.user.priziuretojas == 3">Direktorių prižiurėtojas</span>
-            <span class="privs mod" v-if="this.$page.props.user.priziuretojas == 4">Gaujų/mafijų prižiurėtojas</span>
-            <span class="privs mod" v-if="this.$page.props.user.priziuretojas == 5">Administratorių prižiurėtojas</span>
-            <span class="privs mod" v-if="this.$page.props.user.priziuretojas == 6">VIP prižiurėtojas</span>
-            <span class="privs mod" v-if="this.$page.props.user.priziuretojas == 7">Emigracijų prižiurėtojas</span>
-            <span class="privs direktorius" v-if="this.$page.props.user.direktorius != 0">Direktorius</span>
-            <span class="privs pavaduotojas" v-if="this.$page.props.user.pavaduotojas != 0">Pavaduotojas</span>
-            <span class="privs ban" v-if="this.$page.props.user.banned == 1">Užblokuotas</span>
-            <span class="privs ban" v-if="this.$page.props.user.banned == 2">Užblokuotas laikinai</span>
-            <span class="privs ban" v-if="this.$page.props.user.banned == 3">Užblokuotas IP</span>
-            <span class="privs ban" v-if="this.$page.props.user.mutelaikas != 0">Užtildytas</span>
+            <span class="privs vip" v-if="DisplayVip() != 0">VIP</span>
+            <span class="privs sav" v-if="DisplayAdmin() == 4">Savininkas</span>
+            <span class="privs sav" v-if="DisplayAdmin() <= 4 && DisplayAdmin() != 4 && DisplayAdmin() != 0">Administratorius</span>
+            <span class="privs mod" v-if="DisplayPriz() == 1">Atsiblokavimų prižiurėtojas</span>
+            <span class="privs mod" v-if="DisplayPriz() == 2">Užblokavimų prižiurėtojas</span>
+            <span class="privs mod" v-if="DisplayPriz() == 3">Direktorių prižiurėtojas</span>
+            <span class="privs mod" v-if="DisplayPriz() == 4">Gaujų/mafijų prižiurėtojas</span>
+            <span class="privs mod" v-if="DisplayPriz() == 5">Administratorių prižiurėtojas</span>
+            <span class="privs mod" v-if="DisplayPriz() == 6">VIP prižiurėtojas</span>
+            <span class="privs mod" v-if="DisplayPriz() == 7">Emigracijų prižiurėtojas</span>
+            <span class="privs direktorius" v-if="DisplayDrk() != 0">Direktorius</span>
+            <span class="privs pavaduotojas" v-if="DisplayPav() != 0">Pavaduotojas</span>
+            <span class="privs ban" v-if="DisplayBanned() == 1">Užblokuotas</span>
+            <span class="privs ban" v-if="DisplayBanned() == 2">Užblokuotas laikinai</span>
+            <span class="privs ban" v-if="DisplayBanned() == 3">Užblokuotas IP</span>
+            <span class="privs ban" v-if="DisplayMuted() != 0">Užtildytas</span>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    methods: {
+        DisplayVip() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.vip;
+            } else {
+                return this.$page.props.SearchUserInfo.vip;
+            }
+        },
+        DisplayAdmin() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.admin;
+            } else {
+                return this.$page.props.SearchUserInfo.admin;
+            }
+        },
+        DisplayPriz() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.priziuretojas;
+            } else {
+                return this.$page.props.SearchUserInfo.priziuretojas;
+            }
+        },
+        DisplayDrk() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.direktorius;
+            } else {
+                return this.$page.props.SearchUserInfo.direktorius;
+            }
+        },
+        DisplayPav() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.pavaduotojas;
+            } else {
+                return this.$page.props.SearchUserInfo.pavaduotojas;
+            }
+        },
+        DisplayBanned() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.banned;
+            } else {
+                return this.$page.props.SearchUserInfo.banned;
+            }
+        },
+        DisplayMuted() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.mutelaikas;
+            } else {
+                return this.$page.props.SearchUserInfo.mutelaikas;
+            }
+        },
+    }
 }
 </script>
 

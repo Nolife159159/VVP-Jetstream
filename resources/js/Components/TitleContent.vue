@@ -1,15 +1,25 @@
 <template>
     <div class="title-content">
         <span class="big-text">PROFILIS<br>
-        <span class="name">{{ this.$page.props.user.vardas }}</span></span>
-        <a :href="route('Nustatymai')">
+        <span class="name">{{ DisplayName() }}</span></span>
+        <a :href="route('Nustatymai')" v-if="!this.$page.props.SearchUserInfo">
             <button type="button" class="btn btn-outline-light settings-button">Nustatymai</button>
         </a>
     </div>
 </template>
 
 <script>
-
+export default {
+    methods: {
+        DisplayName() {
+            if(this.$page.props.SearchUserInfo === undefined) {
+                return this.$page.props.user.vardas;
+            } else {
+                return this.$page.props.SearchUserInfo.vardas;
+            }
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>

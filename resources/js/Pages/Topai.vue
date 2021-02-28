@@ -46,7 +46,6 @@ export default {
 
     },
     created() {
-        console.log(this.$page.url);
     },
     metaInfo: {
         title: 'LERG.LT Vartotojų valdymo panelė | Topai ',
@@ -80,6 +79,10 @@ export default {
     text-align: center;
     padding-bottom: 1rem;
     font-size: 80px !important;
+}
+.footer {
+    position: fixed !important;
+    bottom: 0 !important;
 }
 @media (max-width: 768px) {
     .grid-container {
